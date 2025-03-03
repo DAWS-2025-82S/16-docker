@@ -82,3 +82,12 @@ newgrp docker
 # /dev/mapper/RootVG-varTmpVol xfs       2.0G   47M  1.9G   3% /var/tmp
 # /dev/mapper/RootVG-auditVol  xfs       4.4G   64M  4.3G   2% /var/log/audit
 # tmpfs                        tmpfs      71M     0   71M   0% /run/user/1001
+
+# check the docker.sh file has windows supported endings
+
+# cat -A docker.sh
+
+# use the below command to convert
+# dos2unix docker.sh
+
+# Other option is select LF in visual studio code
