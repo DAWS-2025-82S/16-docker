@@ -4,10 +4,10 @@ resource "aws_instance" "this" {
   instance_type          = "t3.micro"
 
   # 20GB is not enough
-  # root_block_device {
-  #   volume_size = 50  # Set root volume size to 50GB
-  #   volume_type = "gp3"  # Use gp3 for better performance (optional)
-  # }
+  root_block_device {
+    volume_size = 50  # Set root volume size to 50GB
+    volume_type = "gp3"  # Use gp3 for better performance (optional)
+  }
   user_data = file("docker.sh")
   tags = {
     Name    = "docker"
