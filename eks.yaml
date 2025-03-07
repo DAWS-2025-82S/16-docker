@@ -1,0 +1,29 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: expense
+  region: us-east-1
+
+# use managedNodeGroups instead of nodeGroups so that AWS will manage the cluster(servers)
+# nodeGroups we have to mange the cluster
+managedNodeGroups:
+  - name: expense
+    instanceTypes: ["m5.large", "c3.large","c4.large","c5.large"]
+    desiredCapacity: 3
+# To create spot instances
+    spot: true
+
+# Desired Capacity -- means on demand instances
+# 3 types of instances in AWS
+# ---------------------------
+# On demand instances
+# spot instnaces
+# reserved instances
+
+# ondemand instances - high cost
+# reserved instances - less cost
+# spot instances - 70 to 90% discount
+
+# eksctl create cluster --config-file=eks.yaml
+# eksctl delete cluster --config-file=eks.yaml

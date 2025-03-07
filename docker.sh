@@ -1,4 +1,6 @@
 #!/bin/bash
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
 
 # Redirect all output to a log file
 exec > /var/log/user-data.log 2>&1
@@ -16,6 +18,16 @@ systemctl start docker
 systemctl enable docker
 usermod -aG docker ec2-user
 newgrp docker
+
+#kubectl installation
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.32.0/2024-12-20/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+mv kubectl /usr/local/bin/kubectl
+
+#eksctl
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+mv /tmp/eksctl /usr/local/bin
 
 # Before resizing
 # [ ec2-user@ip-172-31-37-83 ~ ]$ lsblk
