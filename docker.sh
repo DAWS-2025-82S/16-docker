@@ -5,12 +5,15 @@ PLATFORM=$(uname -s)_$ARCH
 # Redirect all output to a log file
 exec > /var/log/user-data.log 2>&1
 
+echo "###### extending volumes properly ######"
 growpart /dev/nvme0n1 4
 lvextend -l +50%FREE /dev/RootVG/rootVol
 lvextend -l +50%FREE /dev/RootVG/varVol
 xfs_growfs /
 xfs_growfs /var
+echo "###### extending volumes successful ######"
 
+echo "###### Installing docker ######"
 dnf -y install dnf-plugins-core
 dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
 dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
@@ -18,7 +21,9 @@ systemctl start docker
 systemctl enable docker
 usermod -aG docker ec2-user
 newgrp docker
+echo "###### docker installation successful ######"
 
+echo "###### Installing kubectl and eksctl ######"
 #kubectl installation
 curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.32.0/2024-12-20/bin/linux/amd64/kubectl
 chmod +x ./kubectl
@@ -28,6 +33,7 @@ mv kubectl /usr/local/bin/kubectl
 curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 mv /tmp/eksctl /usr/local/bin
+echo "###### kubectl and eksctl installed ######"
 
 # Before resizing
 # [ ec2-user@ip-172-31-37-83 ~ ]$ lsblk
@@ -103,3 +109,7 @@ mv /tmp/eksctl /usr/local/bin
 # dos2unix docker.sh
 
 # Other option is select LF in visual studio code
+
+# To check userdata output
+# sudo tail -f /var/log/cloud-init-output.log
+# sudo cat /var/log/user-data.log
