@@ -35,6 +35,27 @@ tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 mv /tmp/eksctl /usr/local/bin
 echo "###### kubectl and eksctl installed ######"
 
+# To avoid mentioning the namespace name (-n namespacename) in  kubectl commands 
+# install the tool kubens
+
+sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
+sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+echo "###### kubens installed ######"
+
+# kubens <namespace_name>  -- set the name of namespace
+# kubens expense
+
+# ebs csi driver for EBS(Elastic Block Storage)
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.40"
+echo "###### EBS csi driver installed ######"
+
+kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-2.1"
+echo "###### EFS csi driver installed ######"
+
+curl -sS https://webinstall.dev/k9s | bash
+echo "###### k9s installed ######"
+
 # Before resizing
 # [ ec2-user@ip-172-31-37-83 ~ ]$ lsblk
 # NAME                 MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
