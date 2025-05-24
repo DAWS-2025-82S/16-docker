@@ -53,8 +53,14 @@ echo "###### EBS csi driver installed ######"
 kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-2.1"
 echo "###### EFS csi driver installed ######"
 
+# k9s installation
 curl -sS https://webinstall.dev/k9s | bash
 echo "###### k9s installed ######"
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+echo "###### HELM Installed ######"
 
 # Before resizing
 # [ ec2-user@ip-172-31-37-83 ~ ]$ lsblk
